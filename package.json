@@ -6,11 +6,14 @@
   "scripts": {
     "start": "node build/index",
     "build": "tsc -p .",
-    "dev": "tsc-watch --onSuccess \"npm start\""
+    "prisma:generate": "prisma generate",
+    "dev": "npm run prisma:generate && tsc-watch --onSuccess \"npm start\""
+    
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
     "@types/jsonwebtoken": "^9.0.4",
+    "npm-run-all": "^4.1.5",
     "prisma": "^4.16.2",
     "tsc-watch": "^6.0.4",
     "typescript": "^5.1.6"
@@ -30,3 +33,6 @@
     "jsonwebtoken": "^9.0.2"
   }
 }
+
+
+

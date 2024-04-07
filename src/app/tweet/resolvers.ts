@@ -73,3 +73,7 @@ const s3Client = new S3Client({
 
   
   export const resolvers={mutations,extraResolvers,queries}
+
+  // "start": "node build/index",
+  //   "build": "tsc -p .",
+  //   "dev": "tsc-watch --onSuccess \"npm start\""
