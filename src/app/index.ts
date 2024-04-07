@@ -48,6 +48,7 @@ export   async function initServer(){
           ...Tweet.resolvers.extraResolvers,
           ...User.resolvers.extraResolvers
         },
+        introspection: true,
       });
       await server.start();
 
