@@ -45,6 +45,7 @@ function initServer() {
         }
         `,
             resolvers: Object.assign(Object.assign({ Query: Object.assign(Object.assign({}, user_1.User.resolvers.queries), tweet_1.Tweet.resolvers.queries), Mutation: Object.assign(Object.assign({}, tweet_1.Tweet.resolvers.mutations), user_1.User.resolvers.mutations) }, tweet_1.Tweet.resolvers.extraResolvers), user_1.User.resolvers.extraResolvers),
+            introspection: true,
         });
         yield server.start();
         app.use('/graphql', (0, express4_1.expressMiddleware)(server, {
