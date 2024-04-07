@@ -28,7 +28,7 @@ interface GoogleTokenResult {
        
 }
 const  queries ={
-    getUserById:async(parent:any,{id}:{id:string},ctx:GraphQLContext)=> prismaClient.user.findUnique({where:{id}}),
+    getUserById:async(parent:any,{id}:{id:string},ctx:GraphQLContext)=> UserService.getUserById(id),
     
 
 
@@ -44,7 +44,7 @@ const  queries ={
     getCurrentUser:async(parent:any,args:any,ctx:GraphQLContext)=>{
         const id =ctx.user?.id;
         if(!id) return null;
-        const user = await prismaClient.user.findUnique({where:{id}});
+        const user = await UserService.getUserById(id);
         return user;
     },
     
@@ -53,7 +53,36 @@ const  queries ={
 
 const extraResolvers = {
     User:{
-    tweets:(parent:User)=> prismaClient.tweet.findMany({where:{author:{id:parent.id}}})
+    tweets:(parent:User)=> prismaClient.tweet.findMany({where:{author:{id:parent.id}}}),
+    followers: async (parent:User)=>{
+        const result = await  prismaClient.follows.findMany({
+            where:{following:{id:parent.id}},
+            include:{follower:true}
+        })
+        return result.map((el)=>el.follower)
+
+    },
+    following: async (parent:User)=>{
+       const result = await  prismaClient.follows.findMany({
+            where:{follower:{id:parent.id}},
+            include:{following:true}
+        });
+        return result.map((el)=>el.following)
+    }
+    
+    }
+};
+const mutations = {
+    followUser:async(parent:any,{to}:{to:string},ctx:GraphQLContext)=>{
+        if(!ctx.user||!ctx.user.id) throw new Error("unauthenicated");
+        await UserService.followUser(ctx.user.id,to);
+        return true;
+    },
+    unfollowUser :async(parent:any,{to}:{to:string},ctx:GraphQLContext)=>{
+        if(!ctx.user||!ctx.user.id) throw new Error("unauthenicated");
+        await UserService.unfollowUser(ctx.user.id,to);
+        return true;
     }
 }
-export const resolvers={queries,extraResolvers};
+
+export const resolvers={queries,extraResolvers,mutations};
