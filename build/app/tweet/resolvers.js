@@ -58,3 +58,6 @@ const extraResolvers = {
     }
 };
 exports.resolvers = { mutations, extraResolvers, queries };
+// "start": "node build/index",
+//   "build": "tsc -p .",
+//   "dev": "tsc-watch --onSuccess \"npm start\""
