@@ -9,6 +9,8 @@ import { Tweet } from './tweet';
 import cors from 'cors'
 import {GraphQLContext} from './interfaces'
 import JWTService from '../services/jwt';
+import { ApolloServerPluginLandingPageLocalDefault, ApolloServerPluginLandingPageProductionDefault } from '@apollo/server/plugin/landingPage/default';
+
 
 export   async function initServer(){
     const app = express();
@@ -49,6 +51,10 @@ export   async function initServer(){
           ...User.resolvers.extraResolvers
         },
         introspection: true,
+        plugins: [
+          // Use the same landing page plugin for both production and non-production environments
+          ApolloServerPluginLandingPageLocalDefault({ footer: false }),
+        ],
       });
       await server.start();
 
@@ -64,6 +70,7 @@ export   async function initServer(){
       return app;
 
 }
+
 
 
 
