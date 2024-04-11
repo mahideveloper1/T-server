@@ -7,7 +7,7 @@
     "start": "node build/index",
     "build": "tsc -p .",
    
-    "dev": "npx prisma migrate deploy "
+    "dev": "npx prisma migrate reset "
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
